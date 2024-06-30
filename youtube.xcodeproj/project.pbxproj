@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		490F63F12C318F2600520D0F /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F63F02C318F2600520D0F /* APIKey.swift */; };
+		490F63F52C318FAA00520D0F /* APIKey.plist in Resources */ = {isa = PBXBuildFile; fileRef = 490F63F42C318FAA00520D0F /* APIKey.plist */; };
 		491F2CF82C08120400A13C1F /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491F2CF72C08120400A13C1F /* WebViewController.swift */; };
-		491F2CFC2C08631800A13C1F /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491F2CFB2C08631800A13C1F /* APIKey.swift */; };
-		491F2D062C08691100A13C1F /* APIKey.plist in Resources */ = {isa = PBXBuildFile; fileRef = 491F2D052C08691100A13C1F /* APIKey.plist */; };
 		49D41F662C05A79800F6CD3F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D41F652C05A79800F6CD3F /* AppDelegate.swift */; };
 		49D41F682C05A79800F6CD3F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D41F672C05A79800F6CD3F /* SceneDelegate.swift */; };
 		49D41F6D2C05A79800F6CD3F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49D41F6B2C05A79800F6CD3F /* Main.storyboard */; };
@@ -22,9 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		490F63F02C318F2600520D0F /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIKey.swift; path = APIKey/APIKey.swift; sourceTree = SOURCE_ROOT; };
+		490F63F42C318FAA00520D0F /* APIKey.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = APIKey.plist; path = APIKey/APIKey.plist; sourceTree = SOURCE_ROOT; };
 		491F2CF72C08120400A13C1F /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
-		491F2CFB2C08631800A13C1F /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
-		491F2D052C08691100A13C1F /* APIKey.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = APIKey.plist; sourceTree = "<group>"; };
 		49D41F622C05A79800F6CD3F /* youtube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = youtube.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D41F652C05A79800F6CD3F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49D41F672C05A79800F6CD3F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,11 +49,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		491F2CF92C08609E00A13C1F /* APIKey */ = {
+		490F63E92C31845400520D0F /* APIKey */ = {
 			isa = PBXGroup;
 			children = (
-				491F2D052C08691100A13C1F /* APIKey.plist */,
-				491F2CFB2C08631800A13C1F /* APIKey.swift */,
+				490F63F42C318FAA00520D0F /* APIKey.plist */,
+				490F63F02C318F2600520D0F /* APIKey.swift */,
 			);
 			path = APIKey;
 			sourceTree = "<group>";
@@ -61,7 +61,6 @@
 		49D41F592C05A79800F6CD3F = {
 			isa = PBXGroup;
 			children = (
-				491F2CF92C08609E00A13C1F /* APIKey */,
 				49D41F642C05A79800F6CD3F /* youtube */,
 				49D41F632C05A79800F6CD3F /* Products */,
 			);
@@ -78,6 +77,7 @@
 		49D41F642C05A79800F6CD3F /* youtube */ = {
 			isa = PBXGroup;
 			children = (
+				490F63E92C31845400520D0F /* APIKey */,
 				49D41F652C05A79800F6CD3F /* AppDelegate.swift */,
 				49D41F672C05A79800F6CD3F /* SceneDelegate.swift */,
 				49D41F6B2C05A79800F6CD3F /* Main.storyboard */,
@@ -153,7 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49D41F722C05A7A600F6CD3F /* LaunchScreen.storyboard in Resources */,
-				491F2D062C08691100A13C1F /* APIKey.plist in Resources */,
+				490F63F52C318FAA00520D0F /* APIKey.plist in Resources */,
 				49D41F6F2C05A7A600F6CD3F /* Assets.xcassets in Resources */,
 				49D41F6D2C05A79800F6CD3F /* Main.storyboard in Resources */,
 			);
@@ -164,7 +164,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		491F2CFA2C0861AE00A13C1F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -189,7 +189,7 @@
 			files = (
 				49D41F662C05A79800F6CD3F /* AppDelegate.swift in Sources */,
 				49D41F682C05A79800F6CD3F /* SceneDelegate.swift in Sources */,
-				491F2CFC2C08631800A13C1F /* APIKey.swift in Sources */,
+				490F63F12C318F2600520D0F /* APIKey.swift in Sources */,
 				49D41F862C070D6C00F6CD3F /* VideoTableViewCell.swift in Sources */,
 				49D41F7C2C05C46D00F6CD3F /* channelJSON.swift in Sources */,
 				49D41F802C06DC4800F6CD3F /* MainTableViewController.swift in Sources */,
