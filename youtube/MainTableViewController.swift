@@ -61,8 +61,7 @@ class MainTableViewController: UITableViewController {
         
         //使用者目前的日曆
         let calendar = Calendar.current
-        
-        
+
         //以什麼樣的格式回傳兩個日期的差異(比較年/月/日)
         let components = calendar.dateComponents([.year,.month,.day], from: date, to: .now)
         
@@ -159,44 +158,25 @@ class MainTableViewController: UITableViewController {
 
     //抓取影片資訊
     func fetchVideoInfo(){
-        
         if let url = URL(string: "https://www.googleapis.com/youtube/v3/playlistItems?key=\(APIKey.default)&part=snippet&playlistId=PL5hrGMysD_GuqSBxBtwuXRmyuvzeQyDs6&maxResults=50"){
             
-            URLSession.shared.dataTask(with: url) { data, response, error in
+            URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+                guard let self = self else { return }
                 if let data{
-                    
                     let decoder = JSONDecoder()
                     decoder.dateDecodingStrategy = .iso8601
-                    
-                    do{
-                        let info = try decoder.decode(playlistItem.self, from: data)
+                    if let info = try? decoder.decode(playlistItem.self, from: data) {
                         self.playlist = info.items
                         DispatchQueue.main.async{
                             self.tableView.reloadData()
-                            
                         }
-
-                    }catch{
-                        
-                        print(error)
-                        
                     }
-                    
-                }else if let error{
-                    
-                    print(error)
+                } else if let error{
+                    print("Error: fetch video info \(error.localizedDescription)")
                 }
-                
-                
-                
             }.resume()
             
         }
-        
-        
-        
-        
-        
         
     }
     
@@ -214,39 +194,42 @@ class MainTableViewController: UITableViewController {
     }
     
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(VideoTableViewCell.self)", for: indexPath) as! VideoTableViewCell
-        
-        cell.channelNameLabel.text = playlist[indexPath.row].snippet.channelTitle
-        let isoDateString = playlist[indexPath.row].snippet.publishedAt
-        let result = timeAgo(date: isoDateString)
-        cell.publishedDateLabel.text = result
-        
-
-        cell.videoNameLabel.text = playlist[indexPath.row].snippet.title
-        cell.videoNameLabel.numberOfLines = 3
-        
-        URLSession.shared.dataTask(with: playlist[indexPath.row].snippet.thumbnails.high.url) { data, response, error in
-            
-            if let data{
-                DispatchQueue.main.async {
-                    cell.videoImageView.image = UIImage(data: data)
-                    cell.videoImageView.layer.cornerRadius = 10
-                }
-                
-            }else if let error{
-                print(error)
-            }
-            
-        }.resume()
-        
-        
-        // Configure the cell...
-        
+        cell.selectionStyle = .none
+        let playListItem = playlist[indexPath.row]
+        cell.configure(with: playListItem)
+        loadImage(for: cell, at: indexPath, with: playlist[indexPath.row].snippet.thumbnails.high.url)
+    
         return cell
     }
     
+    func loadImage(for cell: VideoTableViewCell, at indexPath: IndexPath, with url: URL) {
+        cell.videoImageView.image = nil
+        
+        URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                guard let currentIndexPath = self.tableView.indexPath(for: cell), currentIndexPath == indexPath else {
+                    return
+                }
+                if let error {
+                    print("Error: Loading image \(error.localizedDescription)")
+                    return
+                }
+                if let data {
+                    let image = UIImage(data: data)
+                    cell.videoImageView.image = UIImage(data: data)
+                    cell.videoImageView.layer.cornerRadius = 10
+                }
+            }
+        }.resume()
+        
+    }
     
     
 }

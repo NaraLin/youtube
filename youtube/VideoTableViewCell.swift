@@ -25,5 +25,14 @@ class VideoTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    func configure(with playlistItem: PlaylistItems) {
+        channelNameLabel.text = playlistItem.snippet.channelTitle
+        let isoDateString = playlistItem.snippet.publishedAt
+        let result = MainTableViewController().timeAgo(date: isoDateString)
+        publishedDateLabel.text = result
+        videoNameLabel.text = playlistItem.snippet.title
+        videoNameLabel.numberOfLines = 3
+    }
 
 }
