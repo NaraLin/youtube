@@ -25,7 +25,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </imageView>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="EdX-yj-kRA">
-                                    <rect key="frame" x="16" y="100" width="369" height="150"/>
+                                    <rect key="frame" x="16" y="100" width="361" height="150"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="2G4-W3-nNi">
                                             <rect key="frame" x="0.0" y="0.0" width="196.66666666666666" height="125.66666666666667"/>
@@ -71,7 +71,7 @@
                                             </subviews>
                                         </stackView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3iJ-3p-vE2" userLabel="channelDescription">
-                                            <rect key="frame" x="0.0" y="129.66666666666666" width="353" height="20.333333333333343"/>
+                                            <rect key="frame" x="0.0" y="129.66666666666666" width="345" height="20.333333333333343"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -85,9 +85,9 @@
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
-                                <constraint firstItem="EdX-yj-kRA" firstAttribute="leading" secondItem="Lur-RK-ned" secondAttribute="leading" constant="16" id="9fA-4b-qSu"/>
+                                <constraint firstItem="EdX-yj-kRA" firstAttribute="leading" secondItem="Lur-RK-ned" secondAttribute="leading" constant="16" id="PdD-Mo-ggN"/>
                                 <constraint firstAttribute="bottom" secondItem="EdX-yj-kRA" secondAttribute="bottom" constant="16" id="QdA-W7-3ns"/>
-                                <constraint firstAttribute="trailing" secondItem="EdX-yj-kRA" secondAttribute="trailing" constant="8" id="t0O-aa-TS7"/>
+                                <constraint firstAttribute="trailing" secondItem="EdX-yj-kRA" secondAttribute="trailing" constant="16" id="t0O-aa-TS7"/>
                                 <constraint firstItem="EdX-yj-kRA" firstAttribute="top" secondItem="C4v-J5-4NV" secondAttribute="bottom" constant="8" id="tn3-KQ-E5o"/>
                             </constraints>
                         </view>

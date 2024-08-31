@@ -17,15 +17,25 @@ class MainTableViewController: UITableViewController {
     
     var videoChannelInfo:[Items] = []
     var playlist:[PlaylistItems] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.channelImageView.layer.cornerRadius = self.channelImageView.bounds.width/2
-        self.channelImageView.clipsToBounds = true
         
+        channelImageView.layer.cornerRadius = channelImageView.bounds.width/2
+        channelImageView.clipsToBounds = true
+        bannerImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            
+            bannerImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bannerImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bannerImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ])
         fetchChannelInfo()
         fetchVideoInfo()
         
     }
+    
     
     //數字的字串轉換成以萬為單位顯示
     func convertToTenThousands(from numberString: String) -> String? {
@@ -75,75 +85,65 @@ class MainTableViewController: UITableViewController {
         
         if let url = URL(string: "https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics,topicDetails,status,contentOwnerDetails,brandingSettings&id=UCLkAepWjdylmXSltofFvsYQ&key=\(APIKey.default)"){
             
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                if let data{
-                    let decoder = JSONDecoder()
-                    
-                    do{
-                        
-                        let info = try decoder.decode(ChannelJson.self, from: data)
-                        self.videoChannelInfo = info.items
-                        
-                        DispatchQueue.main.async{
-                            
-                            self.channelNameLabel.text = self.videoChannelInfo.first?.snippet.title
-                            self.channelNameLabel.font = UIFont.boldSystemFont(ofSize: 24)
-                            
-                            
-                            let subscriberCount =  self.videoChannelInfo.first?.statistics.subscriberCount
-                            
-                            if let subscriberCount{
-                                let subscriberCountToTenThousandUnit = self.convertToTenThousands(from: subscriberCount)
-                                if let subscriberCountToTenThousandUnit{
-                                    self.subscriberCount.text = subscriberCountToTenThousandUnit + "位訂閱者"
-                                }
-                            }
-                            
-                            
-                            self.videoCount.text = (self.videoChannelInfo.first?.statistics.videoCount)! + "部影片"
-                            
-                            self.channelIntroLabel.text = self.videoChannelInfo.first?.snippet.description
-                            self.channelIntroLabel.numberOfLines = 0
-                            self.channelIntroLabel.font = UIFont.systemFont(ofSize: 16)
-                            self.channelIntroLabel.textColor = UIColor.gray
-                            
-                            URLSession.shared.dataTask(with: (self.videoChannelInfo.first?.brandingSettings.image.bannerExternalUrl)!) { data, response, error in
-                                if let bannerImageData = data{
-                                    DispatchQueue.main.async {
-                                        self.bannerImageView.image = UIImage(data: bannerImageData)
-                                    }
-                                }
-                                
-                            }.resume()
-                            
-                            URLSession.shared.dataTask(with: (self.videoChannelInfo.first?.snippet.thumbnails.defaultImg.url)!) { data, response, error in
-                                
-                                if let channelImgData = data{
-                                    DispatchQueue.main.async {
-                                        self.channelImageView.image = UIImage(data: channelImgData)
-                                        
-                                    }
-                                }
-                            }.resume()
-                            
-                            
-                        }
-                        
-                        
-                        
-                    }catch{
-                        print(error)
-                        
-                    }
-                } else if let error{
-                    print(error)
+            URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+                
+                guard let self = self else { return }
+                
+                if let error {
+                    print("\(error)")
+                    return
                 }
                 
+                guard let data else {
+                    print("Error: no data")
+                    return
+                }
+                do {
+                    let decoder = JSONDecoder()
+                    let info = try decoder.decode(ChannelJson.self, from: data)
+                    self.videoChannelInfo = info.items
+                    DispatchQueue.main.async {
+                        self.updateUI()
+                    }
+                } catch {
+                    print("Error: decode data error")
+                }
             }.resume()
-            
-            
+        }
+    }
+    
+    func updateUI(){
+        guard let channelInfo = videoChannelInfo.first else {
+            return
         }
         
+        channelNameLabel.text = channelInfo.snippet.title
+        channelNameLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        
+        let subscriberDetailCount = channelInfo.statistics.subscriberCount
+        if let formattedCount = convertToTenThousands(from: subscriberDetailCount) {
+            subscriberCount.text = formattedCount + "位訂閱者"
+        }
+        
+        videoCount.text = (channelInfo.statistics.videoCount) + "部影片"
+        channelIntroLabel.text = channelInfo.snippet.description
+        channelIntroLabel.numberOfLines = 0
+        channelIntroLabel.font = UIFont.systemFont(ofSize: 16)
+        channelIntroLabel.textColor = UIColor.gray
+        
+        loadImage(from: channelInfo.brandingSettings.image.bannerExternalUrl, into: bannerImageView)
+        loadImage(from: channelInfo.snippet.thumbnails.defaultImg.url, into: channelImageView)
+        }
+    
+    
+    func loadImage(from url: URL, into imageView: UIImageView) {
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let data = data{
+                DispatchQueue.main.async {
+                    imageView.image = UIImage(data: data)
+                }
+            }
+        }.resume()
     }
     
     @IBSegueAction func showVideo(_ coder: NSCoder) -> WebViewController? {
@@ -152,13 +152,11 @@ class MainTableViewController: UITableViewController {
         if let row = tableView.indexPathForSelectedRow?.row{
             controller?.video = playlist[row]
             return controller
-        }else{
+        } else {
             return nil
         }
     }
-    
-    
-    
+
     //抓取影片資訊
     func fetchVideoInfo(){
         
@@ -177,9 +175,7 @@ class MainTableViewController: UITableViewController {
                             self.tableView.reloadData()
                             
                         }
-                        
-                        
-                        
+
                     }catch{
                         
                         print(error)
